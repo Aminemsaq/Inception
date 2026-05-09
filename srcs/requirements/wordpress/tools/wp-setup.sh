@@ -4,7 +4,7 @@ DB_PASSWORD=$(cat /run/secrets/db_password)
 WP_ADMIN_PASSWORD=$(cat /run/secrets/credentials)
 
 echo "Waiting for MariaDB..."
-while ! mysqladmin ping -h mariadb --silent 2>/dev/null; do
+while ! mysqladmin ping -h mariadb -u amsaq_user -p${DB_PASSWORD} --silent 2>/dev/null; do
     sleep 2
 done
 echo "MariaDB is ready!"
@@ -15,7 +15,6 @@ if [ ! -f /usr/local/bin/wp ]; then
     mv wp-cli.phar /usr/local/bin/wp
 fi
 
-# Check wp-config instead of wp-login.php
 if [ ! -f /var/www/html/wp-config.php ]; then
     wp core download --allow-root --path=/var/www/html
 
