@@ -5,6 +5,7 @@ DB_PASSWORD=$(cat /run/secrets/db_password)
 
 if [ ! -d "/var/lib/mysql/wordpress" ]; then
     mysql_install_db --user=mysql --datadir=/var/lib/mysql
+
     mysqld_safe --skip-networking &
     sleep 5
 

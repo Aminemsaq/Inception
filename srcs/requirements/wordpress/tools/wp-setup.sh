@@ -9,12 +9,6 @@ while ! mysqladmin ping -h mariadb -u amsaq_user -p${DB_PASSWORD} --silent 2>/de
 done
 echo "MariaDB is ready!"
 
-if [ ! -f /usr/local/bin/wp ]; then
-    wget -q https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
-    chmod +x wp-cli.phar
-    mv wp-cli.phar /usr/local/bin/wp
-fi
-
 if [ ! -f /var/www/html/wp-config.php ]; then
     wp core download --allow-root --path=/var/www/html
 
@@ -29,7 +23,7 @@ if [ ! -f /var/www/html/wp-config.php ]; then
         --path=/var/www/html \
         --url=https://amsaq.42.fr \
         --title="Amsaq Inception" \
-        --admin_user=amsaq_admin \
+        --admin_user=amsaq42 \
         --admin_password=${WP_ADMIN_PASSWORD} \
         --admin_email=amsaq@student.42.fr \
         --skip-email
