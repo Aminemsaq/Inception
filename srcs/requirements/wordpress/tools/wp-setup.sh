@@ -16,7 +16,7 @@ if [ ! -f /var/www/html/wp-config.php ]; then
     wp core install --allow-root --path=/var/www/html \
         --url=https://$DOMAIN_NAME --title="Amsaq Inception" \
         --admin_user=$WP_ADMIN_USER --admin_password=$PASSWORD \
-        --admin_email=$WP_ADMIN_EMAIL --skip-email
+        --admin_email=$WP_ADMIN_EMAIL
 
     wp user create $MYSQL_USER2 $WP_USER_EMAIL \
         --user_pass=$PASSWORD --allow-root --path=/var/www/html
