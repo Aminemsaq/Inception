@@ -21,36 +21,6 @@ volumes:
       device: /home/amsaq/data/mariadb
 
 services:
-  nginx:
-    build: ./requirements/nginx
-    container_name: nginx
-    image: nginx
-    restart: on-failure
-    ports:
-      - "443:443"
-    volumes:
-      - wordpress:/var/www/html
-    networks:
-      - inception
-    depends_on:
-      - wordpress
-
-  wordpress:
-    build: ./requirements/wordpress
-    container_name: wordpress
-    image: wordpress
-    restart: on-failure
-    volumes:
-      - wordpress:/var/www/html
-    networks:
-      - inception
-    depends_on:
-      - mariadb
-    secrets:
-      - password
-    env_file:
-      - .env
-
   mariadb:
     build: ./requirements/mariadb
     container_name: mariadb
@@ -64,3 +34,40 @@ services:
       - password
     env_file:
       - .env
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "--silent"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+
+  wordpress:
+    build: ./requirements/wordpress
+    container_name: wordpress
+    image: wordpress
+    restart: on-failure
+    volumes:
+      - wordpress:/var/www/html
+    networks:
+      - inception
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    secrets:
+      - password
+    env_file:
+      - .env
+
+  nginx:
+    build: ./requirements/nginx
+    container_name: nginx
+    image: nginx
+    restart: on-failure
+    ports:
+      - "443:443"
+    volumes:
+      - wordpress:/var/www/html
+    networks:
+      - inception
+    depends_on:
+      - wordpress
