@@ -7,7 +7,7 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /usr/local/bin
 
 RUN wget -q https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
-    && chmod +x wp-cli.phar && mv wp-cli.phar wordpress
+    && chmod +x wp-cli.phar && mv wp-cli.phar wp
 
 COPY conf/www.conf /etc/php/8.2/fpm/pool.d/www.conf
 COPY tools/wp-setup.sh .
